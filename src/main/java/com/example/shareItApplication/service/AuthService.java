@@ -2,7 +2,10 @@ package com.example.shareItApplication.service;
 
 import com.example.shareItApplication.dto.AuthenticationResponse;
 import com.example.shareItApplication.dto.LoginRequest;
+import com.example.shareItApplication.model.Token;
+import com.example.shareItApplication.model.TokenType;
 import com.example.shareItApplication.model.User;
+import com.example.shareItApplication.repository.TokenRepository;
 import com.example.shareItApplication.repository.UserRepository;
 import com.example.shareItApplication.security.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class AuthService {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    private TokenRepository tokenRepository;
+
+    @Autowired
     private JwtHelper helper;
 
     public List<User> getUsers(){
@@ -55,11 +61,33 @@ public class AuthService {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
+        revokeAllUserTokens((User)userDetails);
+        saveUserToken((User)userDetails,token);
 
         AuthenticationResponse response = AuthenticationResponse.builder()
                 .jwtToken(token)
                 .username(userDetails.getUsername()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    private void revokeAllUserTokens(User user){
+        var validUserTokens = tokenRepository.findValidTokenByUser(user);
+        if(validUserTokens.isEmpty()) return;
+        validUserTokens.forEach(t->{
+            t.setExpired(true);
+            t.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
+    private void saveUserToken(User user, String token){
+        var JwtToken = Token.builder()
+                .user(user)
+                .token(token)
+                .tokenType(TokenType.BEARER)
+                .revoked(false)
+                .expired(false)
+                .build();
+        tokenRepository.save(JwtToken);
+
     }
     private void doAuthenticate(String email, String password) {
 
