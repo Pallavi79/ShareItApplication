@@ -1,5 +1,6 @@
 package com.example.shareItApplication.security;
 
+import com.example.shareItApplication.repository.TokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -27,6 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtHelper jwtHelper;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -69,7 +72,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //fetch user detail from username
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             Boolean validateToken = this.jwtHelper.validateToken(token, userDetails);
-            if (validateToken) {
+            var tokenValidInDatabase = tokenRepository.findByToken(token).map(t-> !t.isExpired() && !t.isRevoked()).orElse(false);
+            if (validateToken && tokenValidInDatabase) {
 
                 //set the authentication
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
