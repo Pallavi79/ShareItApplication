@@ -20,11 +20,11 @@ public class AuthController {
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    private AuthService userService;
+    private AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) {
-        return this.userService.login(request);
+        return this.authService.login(request);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -38,9 +38,10 @@ public class AuthController {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
     @PostMapping("/signup")
     public User signup(@RequestBody User user){
-        return userService.signup(user);
+        return authService.signup(user);
     }
 }
 
