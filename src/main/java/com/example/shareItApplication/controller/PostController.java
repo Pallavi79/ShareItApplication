@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +31,11 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<PostResponse> getPosts(
             @RequestParam(value="pageNumber",defaultValue ="0",required = false) Integer pageNumber,
-            @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize
+            @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize,
+            @RequestParam(value="sortBy",defaultValue="createdDate",required=false) String sortBy
     ){
 
-        return this.postService.getPosts(pageNumber,pageSize);
+        return this.postService.getPosts(pageNumber,pageSize,sortBy);
     }
 
     @GetMapping("/currentUser")
@@ -69,6 +71,11 @@ public class PostController {
     @PutMapping("/post/{postId}")
     public ResponseEntity<String> updatePost(@RequestBody PostRequest post, @PathVariable Long postId){
         return postService.updatePost(post,postId);
+    }
+
+    @GetMapping("/post/search/{keyWords}")
+    public ResponseEntity<List<Post>> searchPostByTitle(@PathVariable("keyWords") String keyWords){
+        return postService.searchPosts(keyWords);
     }
 
 

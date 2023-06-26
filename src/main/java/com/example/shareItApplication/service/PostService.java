@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,8 +35,8 @@ public class PostService {
     private UserDetailsService userDetailsService;
     private Logger logger = LoggerFactory.getLogger(PostService.class);
 
-    public ResponseEntity<PostResponse> getPosts(Integer pageNumber, Integer pageSize){
-        Pageable p = PageRequest.of(pageNumber,pageSize);
+    public ResponseEntity<PostResponse> getPosts(Integer pageNumber, Integer pageSize,String sortBy){
+        Pageable p = PageRequest.of(pageNumber,pageSize,Sort.by(sortBy).descending());
         Page<Post> pagePost = postRepository.findAll(p);
         List<Post> allPost = pagePost.getContent();
         PostResponse postResponse = new PostResponse();
@@ -121,6 +122,10 @@ public class PostService {
         post.setFileName(postRequest.getFileName());
         postRepository.save(post);
         return new ResponseEntity<>("Post is saved", HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<List<Post>> searchPosts(String keyWord){
+        return new ResponseEntity<>(postRepository.findByTitleContaining(keyWord),HttpStatus.OK);
     }
 
 
