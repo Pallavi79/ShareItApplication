@@ -6,12 +6,18 @@ import com.example.shareItApplication.dto.PostResponse;
 import com.example.shareItApplication.model.Post;
 import com.example.shareItApplication.model.User;
 import com.example.shareItApplication.service.AuthService;
+import com.example.shareItApplication.service.FileService;
 import com.example.shareItApplication.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +30,15 @@ public class PostController {
     private AuthService authService;
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private FileService fileService;
     @GetMapping("/users")
     public List<User> getUsers(){
         return this.authService.getUsers();
     }
+//    @Value("${uploadDir}")
+//    private String path;
 
     @GetMapping("/posts")
     public ResponseEntity<PostResponse> getPosts(
@@ -43,13 +54,29 @@ public class PostController {
     public String getLoggedInUser(Principal principal){
         return principal.getName();
     }
-
     @PostMapping("/user/{userId}/post")
-    public ResponseEntity<?> createPost(@RequestBody PostRequest postRequest, @PathVariable String userId){
-        //return new ResponseEntity<>("Post controller", HttpStatus.CREATED);
-        return postService.createPost(postRequest,userId);
-
+    public ResponseEntity<Post> createPost(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @PathVariable String userId
+    ) {
+        try {
+            Post post = postService.createPost(file, title, content,userId);
+            return ResponseEntity.ok(post);
+        } catch (IOException e) {
+            // Handle the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
+//    @PostMapping("/user/{userId}/post")
+//    public ResponseEntity<?> createPost(@RequestBody PostRequest postRequest, @PathVariable String userId){
+//        //return new ResponseEntity<>("Post controller", HttpStatus.CREATED);
+//        return postService.createPost(postRequest,userId);
+//
+//    }
+
     @GetMapping("/user/{userId}/post")
     public ResponseEntity<PostResponse> getPostByUser(
             @PathVariable String userId,
@@ -71,8 +98,19 @@ public class PostController {
     }
 
     @PutMapping("/post/{postId}")
-    public ResponseEntity<String> updatePost(@RequestBody PostRequest post, @PathVariable Long postId){
-        return postService.updatePost(post,postId);
+    public ResponseEntity<Post> updatePost(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value="content",required = false) String content,
+            @PathVariable Long postId
+    ) {
+        try {
+            Post post = postService.updatePost(file, title, content,postId);
+            return ResponseEntity.ok(post);
+        } catch (IOException e) {
+            // Handle the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/post/search/{keyWords}")
@@ -84,6 +122,13 @@ public class PostController {
         return postService.searchPosts(keyWords,pageNumber,pageSize,sortBy);
     }
 
+//    @PostMapping("post/upload/{postId}")
+//    public ResponseEntity<String> uploadPostFile(
+//            @RequestParam MultipartFile file,
+//            @PathVariable Long postId
+//    ) throws IOException {
+//        String fileName = fileService.uploadFile(path,file);
+//    }
+
 
 }
-
