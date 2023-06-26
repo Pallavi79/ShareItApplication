@@ -1,11 +1,15 @@
 package com.example.shareItApplication.service;
 
 import com.example.shareItApplication.dto.PostRequest;
+import com.example.shareItApplication.dto.PostResponse;
 import com.example.shareItApplication.model.Post;
 import com.example.shareItApplication.model.User;
 import com.example.shareItApplication.repository.PostRepository;
 import com.example.shareItApplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,9 +34,19 @@ public class PostService {
     private UserDetailsService userDetailsService;
     private Logger logger = LoggerFactory.getLogger(PostService.class);
 
-        public List<Post> getPosts(){
-            return postRepository.findAll();
-        }
+    public ResponseEntity<PostResponse> getPosts(Integer pageNumber, Integer pageSize){
+        Pageable p = PageRequest.of(pageNumber,pageSize);
+        Page<Post> pagePost = postRepository.findAll(p);
+        List<Post> allPost = pagePost.getContent();
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(allPost);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return new ResponseEntity<>(postResponse,HttpStatus.OK);
+    }
 
 
     private User findUserById(String userId){
@@ -70,22 +84,37 @@ public class PostService {
     }
 
 
-    public ResponseEntity<List<Post>> findPostByUser(String userId){
-        User user = findUserById(userId);
+    public ResponseEntity<PostResponse> findPostByUser(String userId,Integer pageNumber, Integer pageSize){
+        //User user = findUserById(userId);
         //List<Post> posts = postRepository.getAllByUser(user);
-        return new ResponseEntity<>(postRepository.getAllByUser(user),HttpStatus.OK);
+        //return new ResponseEntity<>(postRepository.getAllByUser(user),HttpStatus.OK);
+        User user=findUserById(userId);
+        if(user==null){
+            throw new RuntimeException("Please create an user profile");
+        }
+        Pageable p = PageRequest.of(pageNumber,pageSize);
+        Page<Post> pagePost = postRepository.findByUserId(userId,p);
+        List<Post> allPost = pagePost.getContent();
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(allPost);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return new ResponseEntity<>(postResponse,HttpStatus.OK);
     }
 
-    public ResponseEntity<Optional<Post>> getPostById(Integer postId){
+    public ResponseEntity<Optional<Post>> getPostById(Long postId){
             return new ResponseEntity<>(postRepository.findById(postId),HttpStatus.OK);
     }
-    public ResponseEntity<String> deletePost(Integer postId){
+    public ResponseEntity<String> deletePost(Long postId){
             postRepository.findById(postId).orElseThrow(()->new RuntimeException("Post not found"));
             postRepository.deleteById(postId);
             return new ResponseEntity<>("Post deleted Successfully",HttpStatus.OK);
     }
 
-    public ResponseEntity<String> updatePost(PostRequest postRequest, Integer postId){
+    public ResponseEntity<String> updatePost(PostRequest postRequest, Long postId){
         Post post = postRepository.findById(postId).orElseThrow(()->new RuntimeException("Post not found"));
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());

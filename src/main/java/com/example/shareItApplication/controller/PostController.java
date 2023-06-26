@@ -1,6 +1,7 @@
 package com.example.shareItApplication.controller;
 
 import com.example.shareItApplication.dto.PostRequest;
+import com.example.shareItApplication.dto.PostResponse;
 import com.example.shareItApplication.model.Post;
 import com.example.shareItApplication.model.User;
 import com.example.shareItApplication.service.AuthService;
@@ -27,8 +28,12 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public List<Post> getPosts(){
-        return this.postService.getPosts();
+    public ResponseEntity<PostResponse> getPosts(
+            @RequestParam(value="pageNumber",defaultValue ="0",required = false) Integer pageNumber,
+            @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize
+    ){
+
+        return this.postService.getPosts(pageNumber,pageSize);
     }
 
     @GetMapping("/currentUser")
@@ -43,23 +48,26 @@ public class PostController {
 
     }
     @GetMapping("/user/{userId}/post")
-    public ResponseEntity<List<Post>> getPostByUser(@PathVariable String userId){
+    public ResponseEntity<PostResponse> getPostByUser(
+            @PathVariable String userId,
+            @RequestParam(value="pageNumber",defaultValue ="0",required = false) Integer pageNumber,
+            @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize){
         //return new ResponseEntity<>("Post controller", HttpStatus.CREATED);
-        return postService.findPostByUser(userId);
+        return postService.findPostByUser(userId,pageNumber,pageSize);
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<Optional<Post>> getPostById(@PathVariable Integer postId){
+    public ResponseEntity<Optional<Post>> getPostById(@PathVariable Long postId){
         return postService.getPostById(postId);
     }
 
     @DeleteMapping("/post/{postId}")
-    public ResponseEntity<String> deletePost(@PathVariable Integer postId){
+    public ResponseEntity<String> deletePost(@PathVariable Long postId){
         return postService.deletePost(postId);
     }
 
     @PutMapping("/post/{postId}")
-    public ResponseEntity<String> updatePost(@RequestBody PostRequest post, @PathVariable Integer postId){
+    public ResponseEntity<String> updatePost(@RequestBody PostRequest post, @PathVariable Long postId){
         return postService.updatePost(post,postId);
     }
 
