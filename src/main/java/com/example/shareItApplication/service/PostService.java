@@ -85,7 +85,7 @@ public class PostService {
     }
 
 
-    public ResponseEntity<PostResponse> findPostByUser(String userId,Integer pageNumber, Integer pageSize){
+    public ResponseEntity<PostResponse> findPostByUser(String userId,Integer pageNumber, Integer pageSize,String sortBy){
         //User user = findUserById(userId);
         //List<Post> posts = postRepository.getAllByUser(user);
         //return new ResponseEntity<>(postRepository.getAllByUser(user),HttpStatus.OK);
@@ -93,7 +93,7 @@ public class PostService {
         if(user==null){
             throw new RuntimeException("Please create an user profile");
         }
-        Pageable p = PageRequest.of(pageNumber,pageSize);
+        Pageable p = PageRequest.of(pageNumber,pageSize,Sort.by(sortBy).descending());
         Page<Post> pagePost = postRepository.findByUserId(userId,p);
         List<Post> allPost = pagePost.getContent();
         PostResponse postResponse = new PostResponse();
@@ -124,8 +124,19 @@ public class PostService {
         return new ResponseEntity<>("Post is saved", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<List<Post>> searchPosts(String keyWord){
-        return new ResponseEntity<>(postRepository.findByTitleContaining(keyWord),HttpStatus.OK);
+    public ResponseEntity<PostResponse> searchPosts(String keyWord,Integer pageNumber, Integer pageSize,String sortBy){
+        Pageable p = PageRequest.of(pageNumber,pageSize,Sort.by(sortBy).descending());
+        Page<Post> pagePost = postRepository.findByTitleContaining(keyWord,p);
+        List<Post> allPost = pagePost.getContent();
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(allPost);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return new ResponseEntity<>(postResponse,HttpStatus.OK);
+        //return new ResponseEntity<>(postRepository.findByTitleContaining(keyWord),HttpStatus.OK);
     }
 
 

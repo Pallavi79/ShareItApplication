@@ -1,5 +1,6 @@
 package com.example.shareItApplication.controller;
 
+import com.example.shareItApplication.config.AppConstants;
 import com.example.shareItApplication.dto.PostRequest;
 import com.example.shareItApplication.dto.PostResponse;
 import com.example.shareItApplication.model.Post;
@@ -30,9 +31,9 @@ public class PostController {
 
     @GetMapping("/posts")
     public ResponseEntity<PostResponse> getPosts(
-            @RequestParam(value="pageNumber",defaultValue ="0",required = false) Integer pageNumber,
-            @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize,
-            @RequestParam(value="sortBy",defaultValue="createdDate",required=false) String sortBy
+            @RequestParam(value="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(value="pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(value="sortBy",defaultValue=AppConstants.SORT_BY,required=false) String sortBy
     ){
 
         return this.postService.getPosts(pageNumber,pageSize,sortBy);
@@ -52,10 +53,11 @@ public class PostController {
     @GetMapping("/user/{userId}/post")
     public ResponseEntity<PostResponse> getPostByUser(
             @PathVariable String userId,
-            @RequestParam(value="pageNumber",defaultValue ="0",required = false) Integer pageNumber,
-            @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize){
+            @RequestParam(value="pageNumber",defaultValue =AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(value="pageSize",defaultValue =AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(value="sortBy",defaultValue=AppConstants.SORT_BY,required=false) String sortBy){
         //return new ResponseEntity<>("Post controller", HttpStatus.CREATED);
-        return postService.findPostByUser(userId,pageNumber,pageSize);
+        return postService.findPostByUser(userId,pageNumber,pageSize,sortBy);
     }
 
     @GetMapping("/post/{postId}")
@@ -74,8 +76,12 @@ public class PostController {
     }
 
     @GetMapping("/post/search/{keyWords}")
-    public ResponseEntity<List<Post>> searchPostByTitle(@PathVariable("keyWords") String keyWords){
-        return postService.searchPosts(keyWords);
+    public ResponseEntity<PostResponse> searchPostByTitle(
+            @PathVariable("keyWords") String keyWords,
+            @RequestParam(value="pageNumber",defaultValue =AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(value="pageSize",defaultValue =AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(value="sortBy",defaultValue=AppConstants.SORT_BY,required=false) String sortBy){
+        return postService.searchPosts(keyWords,pageNumber,pageSize,sortBy);
     }
 
 

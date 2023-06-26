@@ -14,5 +14,5 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     List<Post> getAllByUser(User user);
     @Query("from Post as p where p.user.id=:userId")
     Page<Post> findByUserId(@Param("userId")String userId, Pageable pageable);
-    List<Post> findByTitleContaining(String title);
+    Page<Post> findByTitleContaining(String title,Pageable pageable);
 }
