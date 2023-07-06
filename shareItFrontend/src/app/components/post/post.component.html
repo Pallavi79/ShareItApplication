@@ -12,8 +12,9 @@
   </div> -->
 
   <div class="post-container">
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.content }}</p>
+    <div class="title"><h2>{{ post.title }}</h2></div>
+    <div><p>{{ post.content }}</p></div>
+    
     <div *ngIf="post.fileName" class="media-container">
       <img *ngIf="isImageFile(post.fileName)" [src]="mediaUrl" alt="Post Image" class="resizable-image">
       <video *ngIf="isVideoFile(post.fileName)" controls>

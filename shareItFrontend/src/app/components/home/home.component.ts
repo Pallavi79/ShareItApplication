@@ -1,10 +1,6 @@
 import { Component, OnInit  } from '@angular/core';
 import { PostService } from 'src/app/services/post.service';
 import { SearchService } from 'src/app/services/search.service';
-import { LoginService } from 'src/app/services/login.service';
-import { HttpClient,HttpHeaders} from '@angular/common/http';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
 
 
 import { Location } from '@angular/common';

@@ -43,6 +43,13 @@
   .post-container p {
     margin-bottom: 10px;
   }
+  .title{
+    display: block;
+    background-color: bisque;
+    padding: 10px; 
+    width: 100%;
+    box-sizing: border-box;
+  }
   
   .media-container {
     display: flex;
