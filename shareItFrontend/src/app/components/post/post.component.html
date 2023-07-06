@@ -1,0 +1,60 @@
+
+<!-- <div class="post-container">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    <div *ngIf="post.fileName" class="media-container">
+      <img *ngIf="isImageFile(post.fileName)" [src]="mediaUrl" alt="Post Image" class="resizable-image">
+      <video *ngIf="isVideoFile(post.fileName)" controls>
+        <source [src]="mediaUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div> -->
+
+  <div class="post-container">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    <div *ngIf="post.fileName" class="media-container">
+      <img *ngIf="isImageFile(post.fileName)" [src]="mediaUrl" alt="Post Image" class="resizable-image">
+      <video *ngIf="isVideoFile(post.fileName)" controls>
+        <source [src]="mediaUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  
+    <div class="post-buttons" *ngIf="showButtons">
+      <button class="update-button" (click)="updatePost()">Update</button>
+      <button class="delete-button" (click)="deletePost()">Delete</button>
+    </div>
+  </div>
+  
+
+  <!-- <div class="post-container">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    <div *ngIf="post.content.length > 200" class="read-more-container">
+      <a routerLink="/post/{{ post.id }}" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div *ngIf="post.fileName" class="media-container">
+      <img *ngIf="isImageFile(post.fileName)" [src]="mediaUrl" alt="Post Image" class="resizable-image">
+      <video *ngIf="isVideoFile(post.fileName)" controls>
+        <source [src]="mediaUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div> -->
+  
+  
+<!-- <div class="post-container">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    <div *ngIf="post.file" class="media-container">
+      <img *ngIf="isImageFile(post.file)" [src]="post.file" alt="Post Image">
+      <video *ngIf="isVideoFile(post.file)" controls>
+        <source [src]="post.file" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div> -->
+  
+  

@@ -1,0 +1,29 @@
+<body>
+    <div class="home-page">
+      <div class="navbar">
+        <app-navbar></app-navbar>
+      </div>
+  
+      <div class="home-container">
+        <h1>Your posts</h1>
+        <div class="post-list">
+          <app-post *ngFor="let post of posts" [post]="post" class="post" [showButtons]="true" (update)="handleUpdatePost($event)" (delete)="handleDeletePost($event)" ></app-post>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pagination">
+      <button class="pagination-button" (click)="goToPreviousPage()" [disabled]="currentPage === 0">
+        Previous
+      </button>
+      <span class="pagination-info">{{ currentPage + 1 }} / {{ totalPages }}</span>
+      <button class="pagination-button" (click)="goToNextPage()" [disabled]="currentPage === totalPages - 1">
+        Next
+      </button>
+    </div>
+    
+  </body>
+  <app-update-post-popup *ngIf="showPopup" (close)="showPopup = false"></app-update-post-popup>
+  <div class="overlay" *ngIf="showPopup"></div>
+  
+  

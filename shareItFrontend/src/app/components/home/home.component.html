@@ -1,0 +1,46 @@
+<!-- <body>
+    <div class="home-page">
+      <div class="navbar">
+        <app-navbar></app-navbar>
+      </div>
+
+      <div class="home-container">
+        <h1>Home Page</h1>
+        <div class="post-list">
+          <app-post *ngFor="let post of posts" [post]="post"></app-post>
+        </div>
+      </div>
+    </div>
+  </body> -->
+  <body>
+    <div class="home-page">
+      <div class="navbar">
+        <app-navbar></app-navbar>
+      </div>
+  
+      <div class="home-container">
+        <h1>Home Page</h1>
+        <div class="post-list">
+          <app-post *ngFor="let post of posts" [post]="post" class="post"></app-post>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <button class="pagination-button" (click)="goToPreviousPage()" [disabled]="currentPage === 0">
+        Previous
+      </button>
+      <span class="pagination-info">{{ currentPage + 1 }} / {{ totalPages }}</span>
+      <button class="pagination-button" (click)="goToNextPage()" [disabled]="currentPage === totalPages - 1">
+        Next
+      </button>
+    </div>
+  </body>
+  
+
+
+  
+  
+
+  
+  

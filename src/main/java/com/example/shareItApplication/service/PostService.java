@@ -176,5 +176,10 @@ public class PostService {
         //return new ResponseEntity<>(postRepository.findByTitleContaining(keyWord),HttpStatus.OK);
     }
 
+    public List<Post> findByTitle(String searchTerm){
+        List<Post> searchResults=postRepository.findByTitleContainingIgnoreCase(searchTerm);
+        return searchResults;
+    }
+
 
 }

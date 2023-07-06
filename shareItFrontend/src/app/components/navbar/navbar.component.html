@@ -1,0 +1,93 @@
+
+<!-- <nav class="navbar">
+    <div class="navbar-left">
+      <img src="../../../assets/bubble.png" alt="App Icon" class="app-icon">
+    </div>
+    <div class="navbar-right">
+      <input type="text" class="search-bar" placeholder="Search">
+      <button class="btn-add-post">Add Post</button>
+      <img src="../../../assets/user.png" alt="Profile Icon" class="profile-icon">
+      <button class="btn-logout">Logout</button>
+    </div>
+</nav> -->
+
+<!-- <nav class="navbar">
+    <div class="navbar-left">
+      <div class="navbar-item">
+        <img class="app-icon" src="../../../assets/bubble.png" alt="App Icon">
+      </div>
+      <div class="navbar-item">
+        <span class="app-name">ShareIt</span>
+      </div>
+      <div class="navbar-item">
+        <button class="add-post-button" (click)="showPopup = true">Add Post</button>
+      </div>
+      <div class="navbar-item">
+        <input type="text" class="search-bar" placeholder="Search">
+      </div>
+    </div>
+    <div class="navbar-right">
+      <div class="navbar-item">
+        <img class="profile-icon" src="../../../assets/user.png" alt="Profile Icon">
+      </div>
+      <div class="navbar-item">
+        <button class="logout-button" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+  <app-popup *ngIf="showPopup" (close)="showPopup = false"></app-popup>
+<div class="overlay" *ngIf="showPopup"></div> -->
+
+  <!-- Post Popup -->
+<!-- <div class="post-popup" *ngIf="showPostPopup">
+  <div class="post-popup-content">
+    <h2 class="post-title">Add New Post</h2>
+    <div class="post-form">
+      <label for="post-title">Title</label>
+      <input type="text" id="post-title" [(ngModel)]="postTitle">
+
+      <label for="post-content">Content</label>
+      <textarea id="post-content" [(ngModel)]="postContent"></textarea>
+
+      <label for="post-file">Attachment</label>
+      <input type="file" id="post-file" (change)="onFileChange($event)">
+      
+      <button class="post-submit-button" (click)="submitPost()">Submit</button>
+      <button class="post-cancel-button" (click)="closePostPopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+   -->
+  
+   <nav class="navbar">
+    <div class="navbar-left">
+      <div class="navbar-item">
+        <img class="app-icon" src="../../../assets/bubble.png" alt="App Icon">
+      </div>
+      <div class="navbar-item" (click)="redirectToHome()" style="cursor: pointer;">
+        <span class="app-name">ShareIt</span>
+      </div>
+      
+      <div class="navbar-item">
+        <button class="add-post-button" (click)="showPopup = true">Add Post</button>
+      </div>
+      <div class="navbar-item">
+        <!-- <i class="fas fa-search search-icon"></i> -->
+        <input type="text" class="search-bar" [(ngModel)]="searchTerm" (input)="performSearch()" placeholder="Search...">
+        <!-- <input type="text" class="search-bar" placeholder="Search"> -->
+      </div>
+    </div>
+    <div class="navbar-right">
+      <div class="navbar-item" (click)="redirectToProfile()" title="Go to Profile" [style.cursor]="'pointer'">
+        <img class="profile-icon" src="../../../assets/user.png" alt="Profile Icon">
+        <!-- <span class="profile-name"></span> -->
+      </div>
+      <div class="navbar-item">
+        <button class="logout-button" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+  <app-popup *ngIf="showPopup" (close)="showPopup = false"></app-popup>
+  <div class="overlay" *ngIf="showPopup"></div>
+  
+  

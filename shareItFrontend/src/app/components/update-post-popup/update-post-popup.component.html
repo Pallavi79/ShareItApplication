@@ -1,0 +1,12 @@
+<p>update-post-popup works!</p>
+<div class="popup">
+    <h2>Update Post</h2>
+    <!-- Popup content -->
+    <form (submit)="submitPost()">
+      <input class="form-input" type="text" name="title"[(ngModel)]="title" placeholder="Title" required>
+      <textarea class="form-textarea" name="content"[(ngModel)]="content" placeholder="Content" required></textarea>
+      <input class="form-file" type="file" (change)="handleFileInput($event)">
+      <button class="form-submit-button" class="button-wide"type="submit">Update</button>
+    </form>
+    <button class="close-button button-wide" (click)="close.emit()">Close</button>
+  </div>

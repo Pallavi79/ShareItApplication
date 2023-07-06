@@ -1,0 +1,200 @@
+
+   /* .navbar {
+    background-color: #f1f1f1;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  } */
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 9999;
+  }
+  
+  /* Remaining CSS styles for navbar items and overlay */
+  
+  
+  .navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  .navbar-right{
+    margin-right: 20px;
+  }
+  
+  .navbar-item {
+    margin-right: 10px;
+  }
+  
+  .app-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .app-name {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .add-post-button, .logout-button {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  /* .search-icon {
+    font-size: 20px;
+    color: #888888;
+    cursor: pointer;
+  } */
+  .search-bar {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: none;
+  }
+  
+  .profile-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    z-index: 9998;
+  }
+  
+
+
+
+  /* POST POPUP */
+  /* .post-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  } */
+  /* .post-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  } */
+  /* .post-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90%;
+    overflow-y: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  } */
+  
+  /* @media (max-width: 600px) {
+    .post-popup {
+      width: 95%;
+    }
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    z-index: 9998;
+  }
+  
+  
+  
+  
+  .post-popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  .post-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .post-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .post-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .post-form input[type="text"],
+  .post-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    resize: vertical;
+  }
+  
+  .post-form input[type="file"] {
+    margin-bottom: 10px;
+  }
+  
+  .post-submit-button,
+  .post-cancel-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .post-submit-button:hover,
+  .post-cancel-button:hover {
+    background-color: #45a049;
+  } */
+  
+  
+  
+  

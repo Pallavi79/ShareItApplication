@@ -1,0 +1,45 @@
+
+<div class="popup">
+    <!-- Popup content -->
+    <h2>Add Post</h2>
+    <form (submit)="submitPost()">
+      <input class="form-input" type="text" name="title"[(ngModel)]="title" placeholder="Title" required>
+      <textarea class="form-textarea" name="content"[(ngModel)]="content" placeholder="Content" required></textarea>
+      <input class="form-file" type="file" (change)="handleFileInput($event)">
+      <button class="form-submit-button" class="button-wide"type="submit">Submit</button>
+    </form>
+    <button class="close-button button-wide" (click)="close.emit()">Close</button>
+  </div>
+  
+<!-- <div class="popup">
+    <h2 class="post-title">Add Post</h2>
+    <div class="post-form">
+        <form (submit)="submitPost()">
+            <input type="text" name="title" placeholder="Title" required>
+            <textarea name="content" placeholder="Content" required></textarea>
+            <input type="file" (change)="handleFileInput($event)">
+            <button class="post-submit-button" type="submit">Submit</button>
+          </form>
+          <button class="post-cancel-button" (click)="close.emit()">Close</button>
+           <button class="close-button" (click)="close.emit()">Close</button> 
+
+    </div>
+  </div> -->
+
+  <!-- <div class="post-popup-content">
+    <h2 class="post-title">Add New Post</h2>
+    <div class="post-form">
+      <label for="post-title">Title</label>
+      <input type="text" id="post-title" [(ngModel)]="postTitle">
+
+      <label for="post-content">Content</label>
+      <textarea id="post-content" [(ngModel)]="postContent"></textarea>
+
+      <label for="post-file">Attachment</label>
+      <input type="file" id="post-file" (change)="handleFileInput($event)">
+      
+      <button class="post-submit-button" (click)="submitPost()">Submit</button>
+      <button class="post-cancel-button" (click)="close.emit()">Cancel</button>
+    </div> -->
+  <!-- </div> -->
+  

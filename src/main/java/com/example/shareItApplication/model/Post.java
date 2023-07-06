@@ -20,6 +20,7 @@ public class Post {
     @NonNull
     private String title;
     @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
     private String fileName;
     private Date createdDate;

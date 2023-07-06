@@ -8,14 +8,19 @@ import com.example.shareItApplication.model.User;
 import com.example.shareItApplication.service.AuthService;
 import com.example.shareItApplication.service.FileService;
 import com.example.shareItApplication.service.PostService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.util.Date;
@@ -24,6 +29,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/home")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostController {
 
     @Autowired
@@ -40,7 +46,10 @@ public class PostController {
 //    @Value("${uploadDir}")
 //    private String path;
 
-    @GetMapping("/posts")
+    @Value("${uploadDir}")
+    private String path;
+
+    @GetMapping("/post")
     public ResponseEntity<PostResponse> getPosts(
             @RequestParam(value="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
             @RequestParam(value="pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
@@ -113,13 +122,21 @@ public class PostController {
         }
     }
 
-    @GetMapping("/post/search/{keyWords}")
-    public ResponseEntity<PostResponse> searchPostByTitle(
-            @PathVariable("keyWords") String keyWords,
+//    @GetMapping("/post/search/{keyWords}")
+//    public ResponseEntity<PostResponse> searchPostByTitle(
+//            @PathVariable("keyWords") String keyWords,
+//            @RequestParam(value="pageNumber",defaultValue =AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+//            @RequestParam(value="pageSize",defaultValue =AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+//            @RequestParam(value="sortBy",defaultValue=AppConstants.SORT_BY,required=false) String sortBy){
+//        return postService.searchPosts(keyWords,pageNumber,pageSize,sortBy);
+//    }
+    @GetMapping("post/search")
+    public ResponseEntity<List<Post>> search(
             @RequestParam(value="pageNumber",defaultValue =AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
             @RequestParam(value="pageSize",defaultValue =AppConstants.PAGE_SIZE,required = false) Integer pageSize,
-            @RequestParam(value="sortBy",defaultValue=AppConstants.SORT_BY,required=false) String sortBy){
-        return postService.searchPosts(keyWords,pageNumber,pageSize,sortBy);
+            @RequestParam("searchTerm") String searchTerm) {
+        List<Post> searchResults = postService.findByTitle(searchTerm);
+        return ResponseEntity.ok(searchResults);
     }
 
 //    @PostMapping("post/upload/{postId}")
@@ -131,4 +148,15 @@ public class PostController {
 //    }
 
 
+    @GetMapping("/files/{filename}")
+    public void downloadImage(
+            @PathVariable String filename,
+            HttpServletResponse response
+    ) throws IOException {
+
+        InputStream resource = this.fileService.getResource(path,filename);
+//        MediaType mediaType = determineMediaType(filename);
+        response.setContentType(MediaType.ALL_VALUE);
+        StreamUtils.copy(resource,response.getOutputStream());
+    }
 }

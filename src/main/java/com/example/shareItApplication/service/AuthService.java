@@ -66,7 +66,8 @@ public class AuthService {
 
         AuthenticationResponse response = AuthenticationResponse.builder()
                 .jwtToken(token)
-                .username(userDetails.getUsername()).build();
+                .username(userRepository.findByEmail(userDetails.getUsername()).get().getName())
+                .userId(userRepository.findByEmail(userDetails.getUsername()).get().getUserId()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     private void revokeAllUserTokens(User user){
